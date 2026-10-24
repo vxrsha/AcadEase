@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6759e8">
+  <title>AcadEase — Make Academics Easier</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div>
+          <h2>AcadEase</h2>
+          <span>Make Academics Easier</span>
+        </div>
+      </div>
+
+      <div class="sidebar-profile">
+        <div class="avatar" id="profileAvatar">S</div>
+        <div>
+          <strong id="profileName">Student</strong>
+          <span id="profileCourse">Your academic space</span>
+        </div>
+        <button class="icon-btn" id="profileSettingsBtn" aria-label="Edit profile" title="Edit profile">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+      </div>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <p class="nav-label">WORKSPACE</p>
+        <button class="nav-item active" data-page="dashboard"><i class="fa-solid fa-house"></i><span>Dashboard</span></button>
+        <button class="nav-item" data-page="tasks"><i class="fa-solid fa-list-check"></i><span>My Tasks</span><span class="nav-count" id="sidebarTaskCount">0</span></button>
+        <button class="nav-item" data-page="attendance"><i class="fa-solid fa-calendar-check"></i><span>Attendance</span></button>
+        <button class="nav-item" data-page="timetable"><i class="fa-solid fa-calendar-days"></i><span>Timetable</span></button>
+        <button class="nav-item" data-page="planner"><i class="fa-solid fa-lightbulb"></i><span>Smart Planner</span></button>
+
+        <p class="nav-label">STUDY SPACE</p>
+        <button class="nav-item" data-page="focus"><i class="fa-solid fa-stopwatch"></i><span>Focus Timer</span></button>
+        <button class="nav-item" data-page="analytics"><i class="fa-solid fa-chart-pie"></i><span>Study Analytics</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div>
+          <strong>One step at a time.</strong>
+          <span>Small progress adds up.</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+          <div>
+            <p class="eyebrow" id="todayDate">YOUR ACADEMIC SPACE</p>
+            <h1 id="pageHeading">Dashboard</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+          <button class="profile-chip" id="topProfileBtn">
+            <span class="avatar small" id="topAvatar">S</span>
+            <span id="topProfileName">Student</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="page active" id="dashboardPage">
+        <div class="welcome-banner">
+          <div>
+            <span class="welcome-tag"><i class="fa-solid fa-sparkles"></i> YOUR DAILY OVERVIEW</span>
+            <h2 id="welcomeMessage">Let's make today productive!</h2>
+            <p>Your tasks, attendance and study progress — all in one place.</p>
+            <button class="primary-btn" data-go="tasks"><i class="fa-solid fa-plus"></i> Add a task</button>
+          </div>
+          <div class="welcome-art"><i class="fa-solid fa-book-open-reader"></i></div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon purple"><i class="fa-solid fa-list-check"></i></div>
+            <span>Total tasks</span><strong id="totalTasks">0</strong><small>All your tasks</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></div>
+            <span>Pending tasks</span><strong id="pendingTasks">0</strong><small>Still to complete</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <span>Completed tasks</span><strong id="completedTasks">0</strong><small id="completionRate">0% completion</small>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
+            <span>Overall attendance</span><strong id="overallAttendance">0%</strong><small id="attendanceStatus">Add your subjects</small>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div><h3>Today's classes</h3><p>Your timetable at a glance</p></div>
+              <button class="text-btn" data-go="timetable">View timetable <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div id="todayClassesPreview" class="today-classes-preview">
+              <div class="empty-state"><i class="fa-solid fa-calendar-plus"></i><p>Add your weekly timetable to see today's classes.</p></div>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading">
+              <div><h3>Focus today</h3><p>Your study progress</p></div>
+              <button class="text-btn" data-go="focus">Start focus <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="focus-summary">
+              <div class="focus-summary-icon"><i class="fa-solid fa-stopwatch"></i></div>
+              <strong id="dashboardStudyTime">0 min</strong>
+              <span>Studied today</span>
+              <div class="progress-track"><div class="progress-fill" id="dashboardStudyProgress" style="width:0%"></div></div>
+              <p id="dashboardStudyGoalText">Set a daily study goal in Study Analytics.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div><h3>Upcoming tasks</h3><p>Keep track of what's next</p></div>
+              <button class="text-btn" data-go="tasks">View all <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div id="dashboardTaskList"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><h3>Attendance snapshot</h3><p>Subject-wise progress</p></div><button class="text-btn" data-go="attendance">Details <i class="fa-solid fa-arrow-right"></i></button></div>
+            <div id="dashboardAttendanceList"></div>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Smart suggestions</h3><p>Small steps for a better academic day</p></div></div>
+          <div id="smartSuggestions" class="suggestions-grid"></div>
+        </article>
+      </section>
+
+      <!-- TASKS -->
+      <section class="page" id="tasksPage">
+        <div class="page-intro">
+          <div><h2>Manage your tasks</h2><p>Organize assignments, projects and deadlines in one place.</p></div>
+          <button class="primary-btn" id="addTaskBtn"><i class="fa-solid fa-plus"></i> Add task</button>
+        </div>
+        <div class="mini-stats">
+          <div><span>Total</span><strong id="taskPageTotal">0</strong></div>
+          <div><span>Pending</span><strong id="taskPagePending">0</strong></div>
+          <div><span>Completed</span><strong id="taskPageCompleted">0</strong></div>
+          <div><span>Overdue</span><strong id="taskPageOverdue">0</strong></div>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="taskSearch" type="search" placeholder="Search tasks..."></div>
+            <select id="taskFilter" aria-label="Filter tasks"><option value="all">All tasks</option><option value="pending">Pending</option><option value="completed">Completed</option></select>
+            <select id="priorityFilter" aria-label="Filter priority"><option value="all">All priorities</option><option value="high">High priority</option><option value="medium">Medium priority</option><option value="low">Low priority</option></select>
+          </div>
+          <div id="taskList"></div>
+        </div>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section class="page" id="attendancePage">
+        <div class="page-intro">
+          <div><h2>Attendance tracker</h2><p>Record each scheduled class and keep your attendance above 75%.</p></div>
+          <button class="primary-btn" id="addSubjectBtn"><i class="fa-solid fa-plus"></i> Add subject</button>
+        </div>
+        <div class="stats-grid attendance-stats">
+          <article class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-chart-pie"></i></div><span>Overall attendance</span><strong id="attendancePageOverall">0%</strong><small id="attendancePageMessage">Your attendance summary</small></article>
+          <article class="stat-card"><div class="stat-icon purple"><i class="fa-solid fa-book"></i></div><span>Subjects</span><strong id="subjectCount">0</strong><small>Tracked subjects</small></article>
+          <article class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-check"></i></div><span>Classes attended</span><strong id="classesAttended">0</strong><small>Across all subjects</small></article>
+          <article class="stat-card"><div class="stat-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div><span>Below 75%</span><strong id="lowAttendanceCount">0</strong><small>Subjects to watch</small></article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Attendance calendar</h3><p>Choose a date to see scheduled classes and mark attendance.</p></div></div>
+          <div class="calendar-toolbar">
+            <button class="icon-btn" id="attendancePrevMonth" aria-label="Previous month"><i class="fa-solid fa-chevron-left"></i></button>
+            <h3 id="attendanceCalendarTitle">Month Year</h3>
+            <button class="icon-btn" id="attendanceNextMonth" aria-label="Next month"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="secondary-btn" id="attendanceTodayBtn">Today</button>
+          </div>
+          <div class="calendar-legend">
+            <span><i class="legend-dot present"></i> Present</span>
+            <span><i class="legend-dot absent"></i> Absent</span>
+            <span><i class="legend-dot cancelled"></i> Cancelled</span>
+            <span><i class="legend-dot unmarked"></i> Unmarked</span>
+          </div>
+          <div id="attendanceCalendar" class="attendance-calendar"></div>
+          <div class="selected-day-panel">
+            <div class="panel-heading"><div><h3 id="selectedAttendanceDate">Select a date</h3><p>Classes from your weekly timetable</p></div></div>
+            <div id="selectedDayClasses">
+              <div class="empty-state"><i class="fa-solid fa-calendar-day"></i><p>Add a timetable to view classes here.</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading"><div><h3>Subject-wise attendance</h3><p>Attendance is calculated from your initial counts and recorded classes.</p></div></div>
+          <div id="subjectList"></div>
+        </article>
+      </section>
+
+      <!-- WEEKLY TIMETABLE -->
+      <section class="page" id="timetablePage">
+        <div class="page-intro">
+          <div><h2>Your weekly timetable</h2><p>Add your recurring class schedule once. AcadEase uses it to build your attendance calendar.</p></div>
+          <button class="primary-btn" id="addTimetableClassBtn"><i class="fa-solid fa-plus"></i> Add class</button>
+        </div>
+        <div class="notice-card"><i class="fa-solid fa-circle-info"></i><p>Scheduled classes are not automatically marked present or absent. Record each class after it happens. Cancelled classes are excluded from attendance calculations.</p></div>
+        <div class="timetable-toolbar">
+          <div class="timetable-legend"><span><i class="legend-dot timetable-dot"></i> Scheduled class</span><span><i class="legend-dot present"></i> Present</span><span><i class="legend-dot absent"></i> Absent</span></div>
+          <button class="secondary-btn" id="manageTimetableSubjectsBtn"><i class="fa-solid fa-book"></i> Manage subjects</button>
+        </div>
+        <div class="panel timetable-panel">
+          <div id="weeklyTimetable" class="weekly-timetable">
+            <div class="empty-state"><i class="fa-solid fa-calendar-plus"></i><h3>Your timetable starts here</h3><p>Add your first class and assign its subject, day and time.</p><button class="primary-btn" id="emptyAddTimetableBtn"><i class="fa-solid fa-plus"></i> Add your first class</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SMART PLANNER -->
+      <section class="page" id="plannerPage">
+        <div class="page-intro"><div><h2>Smart Planner</h2><p>Practical suggestions based on your academic progress.</p></div></div>
+        <article class="panel"><div class="panel-heading"><div><h3>Your recommendations</h3><p>Use these suggestions to plan your next steps.</p></div></div><div id="plannerSuggestions" class="suggestions-grid"></div></article>
+      </section>
+
+      <!-- FOCUS TIMER -->
+      <section class="page" id="focusPage">
+        <div class="page-intro"><div><h2>Focus room</h2><p>Study with focused sessions, short breaks and consistent goals.</p></div></div>
+        <div class="focus-layout">
+          <article class="panel focus-timer-panel">
+            <div class="focus-mode-tabs" id="focusModeTabs">
+              <button class="focus-mode-btn active" data-focus-mode="focus">Focus</button>
+              <button class="focus-mode-btn" data-focus-mode="shortBreak">Short break</button>
+              <button class="focus-mode-btn" data-focus-mode="longBreak">Long break</button>
+            </div>
+            <div class="timer-ring" id="timerRing">
+              <div class="timer-ring-inner">
+                <span id="timerModeLabel">TIME TO FOCUS</span>
+                <strong id="timerDisplay">25:00</strong>
+                <span id="timerSessionLabel">Session 1</span>
+              </div>
+            </div>
+            <div class="timer-controls">
+              <button class="primary-btn" id="timerStartBtn"><i class="fa-solid fa-play"></i> Start focus</button>
+              <button class="secondary-btn" id="timerResetBtn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+            <div class="timer-settings">
+              <label>Focus (minutes)<input type="number" id="focusDuration" min="1" max="180" value="25"></label>
+              <label>Short break<input type="number" id="shortBreakDuration" min="1" max="60" value="5"></label>
+              <label>Long break<input type="number" id="longBreakDuration" min="1" max="90" value="15"></label>
+            </div>
+          </article>
+          <article class="panel focus-details-panel">
+            <div class="panel-heading"><div><h3>Session details</h3><p>Connect your focus time to a subject.</p></div></div>
+            <label class="field-label" for="focusSubject">Study subject</label>
+            <select id="focusSubject"><option value="">General study</option></select>
+            <label class="field-label" for="focusSessionNote">What are you working on?</label>
+            <input id="focusSessionNote" type="text" maxlength="120" placeholder="e.g. Revise Unit 3">
+            <div class="focus-today-card">
+              <div><span>Today's study time</span><strong id="focusTodayTime">0 min</strong></div>
+              <div><span>Completed sessions</span><strong id="focusTodaySessions">0</strong></div>
+              <div><span>Current streak</span><strong id="focusStreak">0 days</strong></div>
+            </div>
+            <p class="muted-note">Study time is recorded when a focus session is completed. Paused or reset sessions won't be counted as completed sessions.</p>
+          </article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h3>Recent study sessions</h3><p>Your latest completed focus sessions.</p></div></div><div id="recentStudySessions"></div></article>
+      </section>
+
+      <!-- STUDY ANALYTICS -->
+      <section class="page" id="analyticsPage">
+        <div class="page-intro"><div><h2>Study analytics</h2><p>Understand your study habits and work toward your daily goal.</p></div></div>
+        <div class="stats-grid analytics-stats">
+          <article class="stat-card"><div class="stat-icon purple"><i class="fa-solid fa-clock"></i></div><span>Total study time</span><strong id="totalStudyTime">0h 0m</strong><small>All recorded sessions</small></article>
+          <article class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-calendar-day"></i></div><span>Today's study time</span><strong id="analyticsTodayTime">0 min</strong><small>Today's progress</small></article>
+          <article class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-fire"></i></div><span>Study streak</span><strong id="analyticsStreak">0 days</strong><small>Consecutive study days</small></article>
+          <article class="stat-card"><div class="stat-icon orange"><i class="fa-solid fa-bullseye"></i></div><span>Sessions completed</span><strong id="totalStudySessions">0</strong><small>Completed focus sessions</small></article>
+        </div>
+        <article class="panel study-goal-panel">
+          <div class="panel-heading"><div><h3>Daily study goal</h3><p>Set a realistic target and build consistency.</p></div></div>
+          <form id="studyGoalForm" class="study-goal-form">
+            <label for="dailyStudyGoal">Daily goal (minutes)</label>
+            <input type="number" id="dailyStudyGoal" min="15" max="1440" step="15" value="120" required>
+            <button class="primary-btn" type="submit">Save goal</button>
+          </form>
+          <div class="goal-progress-info"><strong id="goalProgressLabel">0 / 120 minutes</strong><span id="goalProgressPercent">0%</span></div>
+          <div class="progress-track goal-progress-track"><div class="progress-fill" id="goalProgressBar" style="width:0%"></div></div>
+        </article>
+        <div class="content-grid analytics-charts-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Study time by subject</h3><p>Where your focus time goes</p></div></div><div class="chart-container"><canvas id="subjectStudyChart" aria-label="Study time by subject" role="img"></canvas><p class="chart-empty" id="subjectChartEmpty">Complete focus sessions to see your subject breakdown.</p></div></article>
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Daily study distribution</h3><p>Study minutes over the last 7 days</p></div></div><div class="chart-container"><canvas id="weeklyStudyChart" aria-label="Study time over the last seven days" role="img"></canvas><p class="chart-empty" id="weeklyChartEmpty">Your weekly study graph will appear here.</p></div></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h3>Study consistency</h3><p>Your study activity over recent days.</p></div></div><div id="studyConsistencyCalendar" class="study-consistency-calendar"></div></article>
+      </section>
+    </main>
+  </div>
+
+  <!-- TASK MODAL -->
+  <div class="modal-overlay" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="taskModalTitle">Add a task</h2><p>Break your academic work into manageable steps.</p></div><button class="icon-btn" data-close="taskModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <label class="field-label" for="taskTitle">Task title *</label><input id="taskTitle" type="text" required maxlength="120" placeholder="e.g. Complete DBMS assignment">
+        <div class="form-grid">
+          <div><label class="field-label" for="taskSubject">Subject</label><input id="taskSubject" type="text" placeholder="e.g. DBMS"></div>
+          <div><label class="field-label" for="taskCategory">Category</label><select id="taskCategory"><option value="Assignment">Assignment</option><option value="Project">Project</option><option value="Exam preparation">Exam preparation</option><option value="Personal">Personal</option><option value="Other">Other</option></select></div>
+        </div>
+        <div class="form-grid">
+          <div><label class="field-label" for="taskDueDate">Due date</label><input id="taskDueDate" type="date"></div>
+          <div><label class="field-label" for="taskPriority">Priority</label><select id="taskPriority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></div>
+        </div>
+        <label class="field-label" for="taskDescription">Description</label><textarea id="taskDescription" rows="3" placeholder="Add details..."></textarea>
+        <div class="modal-actions"><button type="button" class="secondary-btn" data-close="taskModal">Cancel</button><button type="submit" class="primary-btn" id="saveTaskBtn">Save task</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SUBJECT MODAL -->
+  <div class="modal-overlay" id="subjectModal" role="dialog" aria-modal="true" aria-labelledby="subjectModalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="subjectModalTitle">Add subject</h2><p>Keep your existing attendance counts, if you have them.</p></div><button class="icon-btn" data-close="subjectModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+      <form id="subjectForm">
+        <input type="hidden" id="subjectId">
+        <label class="field-label" for="subjectName">Subject name *</label><input id="subjectName" type="text" required maxlength="100" placeholder="e.g. Mathematics">
+        <div class="form-grid">
+          <div><label class="field-label" for="subjectAttended">Previously attended</label><input id="subjectAttended" type="number" min="0" step="1" value="0" required></div>
+          <div><label class="field-label" for="subjectTotal">Previously held classes</label><input id="subjectTotal" type="number" min="0" step="1" value="0" required></div>
+        </div>
+        <p class="muted-note">These are your historical counts. New scheduled classes are tracked separately through the attendance calendar.</p>
+        <div class="modal-actions"><button type="button" class="secondary-btn" data-close="subjectModal">Cancel</button><button type="submit" class="primary-btn" id="saveSubjectBtn">Save subject</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TIMETABLE CLASS MODAL -->
+  <div class="modal-overlay" id="timetableModal" role="dialog" aria-modal="true" aria-labelledby="timetableModalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="timetableModalTitle">Add timetable class</h2><p>Set a recurring class in your weekly schedule.</p></div><button class="icon-btn" data-close="timetableModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+      <form id="timetableForm">
+        <input type="hidden" id="timetableClassId">
+        <label class="field-label" for="timetableSubject">Subject *</label>
+        <select id="timetableSubject" required><option value="">Choose a subject</option></select>
+        <div class="form-grid">
+          <div><label class="field-label" for="timetableDay">Day *</label><select id="timetableDay" required><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option><option value="0">Sunday</option></select></div>
+          <div><label class="field-label" for="timetableRoom">Room / venue</label><input id="timetableRoom" type="text" maxlength="80" placeholder="e.g. Lab 2"></div>
+        </div>
+        <div class="form-grid">
+          <div><label class="field-label" for="timetableStart">Start time *</label><input id="timetableStart" type="time" required value="09:00"></div>
+          <div><label class="field-label" for="timetableEnd">End time *</label><input id="timetableEnd" type="time" required value="10:00"></div>
+        </div>
+        <label class="field-label" for="timetableNote">Notes (optional)</label><input id="timetableNote" type="text" maxlength="120" placeholder="e.g. Bring lab file">
+        <div class="modal-actions"><button type="button" class="secondary-btn" data-close="timetableModal">Cancel</button><button type="submit" class="primary-btn">Save class</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE RECORD MODAL -->
+  <div class="modal-overlay" id="classAttendanceModal" role="dialog" aria-modal="true" aria-labelledby="classAttendanceTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="classAttendanceTitle">Record attendance</h2><p id="classAttendanceSubtitle">Update this scheduled class.</p></div><button class="icon-btn" data-close="classAttendanceModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+      <form id="classAttendanceForm">
+        <input type="hidden" id="attendanceRecordClassId">
+        <input type="hidden" id="attendanceRecordDate">
+        <div class="attendance-status-options">
+          <label class="attendance-choice"><input type="radio" name="classAttendanceStatus" value="present" required><span><i class="fa-solid fa-check"></i><strong>Present</strong><small>Attended the class</small></span></label>
+          <label class="attendance-choice"><input type="radio" name="classAttendanceStatus" value="absent" required><span><i class="fa-solid fa-xmark"></i><strong>Absent</strong><small>Missed the class</small></span></label>
+          <label class="attendance-choice"><input type="radio" name="classAttendanceStatus" value="cancelled" required><span><i class="fa-solid fa-ban"></i><strong>Cancelled</strong><small>Exclude from attendance</small></span></label>
+        </div>
+        <p class="muted-note">Changing a record updates both the subject's attendance and your overall attendance.</p>
+        <div class="modal-actions"><button type="button" class="secondary-btn" data-close="classAttendanceModal">Cancel</button><button type="submit" class="primary-btn">Save attendance</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle">
+    <div class="modal">
+      <div class="modal-header"><div><h2 id="profileModalTitle">Your profile</h2><p>Personalize your academic workspace.</p></div><button class="icon-btn" data-close="profileModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+      <form id="profileForm">
+        <label class="field-label" for="studentName">Your name *</label><input id="studentName" type="text" required maxlength="80" placeholder="Enter your name">
+        <label class="field-label" for="studentCourse">Course / year</label><input id="studentCourse" type="text" maxlength="100" placeholder="e.g. B.Tech CSE — 2nd year">
+        <div class="modal-actions"><button type="button" class="secondary-btn" data-close="profileModal">Cancel</button><button type="submit" class="primary-btn">Save profile</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
